@@ -20,17 +20,20 @@
         <h3>{{ dia.diaSemana }} <span>{{ dia.fecha | date: 'dd/MM' }}</span></h3>
 
         @for (turno of dia.turnos; track turno.id) {
-          <div class="turno" [class]="turno.tipo">
+          <!-- Cada tarjeta es un enlace a la edición del turno -->
+          <a class="turno" [class]="turno.tipo" [routerLink]="['/turnos', turno.id]">
             <strong>{{ turno.horaInicio }} – {{ turno.horaFin }}</strong>
             <span>{{ turno.empleadoNombre }}</span>
             <small>{{ nombresTipo[turno.tipo] }}</small>
             @if (turno.notas) {
               <em>{{ turno.notas }}</em>
             }
-          </div>
+          </a>
         } @empty {
           <p class="vacio">Sin turnos</p>
         }
+
+        <a class="anadir" routerLink="/turnos/nuevo" [queryParams]="{ fecha: dia.fecha }">+ Añadir</a>
       </div>
     }
   </div>

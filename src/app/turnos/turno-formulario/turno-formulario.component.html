@@ -1,0 +1,72 @@
+<h2>{{ id === null ? 'Nuevo turno' : 'Editar turno' }}</h2>
+
+@if (mensajeError()) {
+  <p class="error">{{ mensajeError() }}</p>
+}
+
+<form [formGroup]="formulario" (ngSubmit)="guardar()">
+  <label>
+    Empleado
+    <select formControlName="empleadoId">
+      <option [ngValue]="null" disabled>Elige un empleado</option>
+      @for (empleado of empleados(); track empleado.id) {
+        <!-- ngValue (y no value) para que el valor sea un número y no un texto -->
+        <option [ngValue]="empleado.id" [disabled]="!empleado.activo">
+          {{ empleado.nombre }} {{ empleado.apellidos }}{{ empleado.activo ? '' : ' (de baja)' }}
+        </option>
+      }
+    </select>
+    @if (errores()['empleadoId']; as error) {
+      <small class="error">{{ error }}</small>
+    }
+  </label>
+
+  <label>
+    Fecha
+    <input type="date" formControlName="fecha" />
+    @if (errores()['fecha']; as error) {
+      <small class="error">{{ error }}</small>
+    }
+  </label>
+
+  <label>
+    Hora de inicio
+    <input type="time" formControlName="horaInicio" />
+    @if (errores()['horaInicio']; as error) {
+      <small class="error">{{ error }}</small>
+    }
+  </label>
+
+  <label>
+    Hora de fin
+    <input type="time" formControlName="horaFin" />
+    @if (errores()['horaFin']; as error) {
+      <small class="error">{{ error }}</small>
+    }
+    <!-- La regla "fin posterior al inicio" llega del backend con el nombre horarioValido -->
+    @if (errores()['horarioValido']; as error) {
+      <small class="error">{{ error }}</small>
+    }
+  </label>
+
+  <p class="ayuda">
+    El tipo de turno se calcula solo según el horario: <strong>cierre</strong> si acaba después de las 23:00,
+    <strong>mañana</strong> si empieza antes de las 12:00 y <strong>tarde</strong> en el resto.
+  </p>
+
+  <label>
+    Notas (opcional)
+    <textarea formControlName="notas" rows="2"></textarea>
+    @if (errores()['notas']; as error) {
+      <small class="error">{{ error }}</small>
+    }
+  </label>
+
+  <div class="acciones">
+    <button type="submit" class="principal" [disabled]="guardando()">Guardar</button>
+    <button type="button" (click)="volverAlCuadrante()">Cancelar</button>
+    @if (id !== null) {
+      <button type="button" class="peligro" (click)="eliminar()">Eliminar turno</button>
+    }
+  </div>
+</form>

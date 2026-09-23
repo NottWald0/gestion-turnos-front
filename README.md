@@ -1,59 +1,75 @@
-# GestionTurnosFront
+# Gestión de Turnos · Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.8.
+Aplicación web en **Angular** para gestionar el personal de un restaurante: cuadrante semanal de turnos y empleados.
 
-## Development server
+Es el frontend de la API REST [gestion-turnos](https://github.com/NottWald0/gestion-turnos) (Java + Spring Boot). Toda la lógica y las reglas de negocio viven en la API; esta aplicación las consume y muestra sus respuestas.
 
-To start a local development server, run:
+## Capturas
 
-```bash
-ng serve
+**Cuadrante semanal**: turnos de lunes a domingo, coloreados por tipo (mañana, tarde, cierre), y horas de cada empleado.
+
+![Cuadrante semanal](docs/capturas/cuadrante.png)
+
+**Empleados**: alta, edición, baja y reactivación.
+
+![Lista de empleados](docs/capturas/empleados.png)
+
+**Formulario de turno**: los errores de la API se muestran en pantalla (aquí, un turno que se solapa con otro).
+
+![Formulario de turno con error](docs/capturas/turno-error.png)
+
+## Funcionalidades
+
+- Cuadrante semanal con navegación entre semanas y resumen de horas por empleado.
+- Crear, editar y eliminar turnos desde el propio cuadrante.
+- Lista de empleados con filtro de dados de baja; alta, edición, baja y reactivación.
+- Errores de la API mostrados en el formulario:
+  - **400** (datos no válidos): debajo de cada campo.
+  - **409 / 422** (email duplicado, turnos solapados, más de 40 h semanales…): mensaje general arriba.
+
+## Stack
+
+- **Angular 22** con componentes *standalone* y **signals**
+- **TypeScript**
+- **Formularios reactivos**, **Router** y **HttpClient**
+- CSS propio, sin librerías de componentes
+
+## Cómo ejecutarlo
+
+Requisitos: **Node.js** (probado con la versión 24) y la API en marcha.
+
+1. Arranca la API siguiendo su [README](https://github.com/NottWald0/gestion-turnos#cómo-ejecutarlo). La forma más rápida:
+   ```bash
+   docker compose up --build   # en la carpeta del backend
+   ```
+2. Instala las dependencias y arranca el frontend:
+   ```bash
+   npm install
+   npm start
+   ```
+3. Abre http://localhost:4200
+
+## Cómo se conecta con la API
+
+En desarrollo, el servidor de Angular hace de **proxy** ([proxy.conf.json](proxy.conf.json)): las peticiones a `/api/...` se reenvían a `http://localhost:8080`. Para el navegador todo viene del mismo origen (`localhost:4200`), así que no hace falta configurar **CORS** en la API.
+
+## Estructura
+
+```
+src/app/
+├── comun/          utilidades compartidas (fechas, lectura de errores de la API)
+├── empleados/      modelo, servicio HTTP, lista y formulario de empleados
+├── turnos/         modelo, servicio HTTP, cuadrante semanal y formulario de turnos
+├── app.routes.ts   rutas de la aplicación
+└── app.config.ts   configuración global (router, HttpClient)
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Organizado **por funcionalidad**, igual que el backend (`empleado/`, `turno/`).
 
-## Code scaffolding
+## Decisiones técnicas
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- **Interfaces TypeScript que reflejan los DTOs de la API** (`Empleado`, `Turno`, `CuadranteSemanal`…), para que el compilador detecte errores de tipos.
+- **Servicios para las llamadas HTTP** y componentes solo para la pantalla: cada capa tiene una responsabilidad, igual que Controller / Service en el backend.
+- **Las validaciones las hace la API**, que es la única fuente de verdad; el frontend muestra sus mensajes (ya en español) en el campo correspondiente.
+- **El estado de navegación va en la URL** (`/cuadrante?fecha=…`, `/empleados?bajas=true`): se conserva al volver de un formulario y al recargar la página.
+- **Signals** para el estado de cada pantalla: al cambiar un valor, Angular actualiza solo lo que depende de él.

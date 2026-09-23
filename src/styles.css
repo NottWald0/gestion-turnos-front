@@ -47,6 +47,11 @@ a.boton.principal:hover {
   background: #1d4ed8;
 }
 
+button.peligro {
+  border-color: #b91c1c;
+  color: #b91c1c;
+}
+
 /* ---------- maquetación ---------- */
 .barra {
   display: flex;
@@ -121,5 +126,11 @@ textarea {
 
 .vacio {
   color: #999;
+  font-size: 0.85rem;
+}
+
+.ayuda {
+  margin: 0;
+  color: #555;
   font-size: 0.85rem;
 }

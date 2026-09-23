@@ -23,13 +23,12 @@ export interface Turno {
   notas: string | null;
 }
 
-/** Lo que se envía para crear o editar un turno. */
+/** Lo que se envía para crear o editar un turno. El tipo no se envía: lo calcula la API según el horario. */
 export interface TurnoRequest {
-  empleadoId: number;
+  empleadoId: number | null; // null si no se ha elegido: el backend responde "es obligatorio"
   fecha: string;
   horaInicio: string;
   horaFin: string;
-  tipo: TipoTurno;
   notas: string | null;
 }
 

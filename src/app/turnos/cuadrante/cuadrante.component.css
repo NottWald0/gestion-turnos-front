@@ -47,6 +47,18 @@
   border-left: 4px solid;
   border-radius: 4px;
   font-size: 0.85rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.turno:hover {
+  filter: brightness(0.95);
+}
+
+.anadir {
+  display: block;
+  font-size: 0.85rem;
+  text-decoration: none;
 }
 
 /* Un color por tipo de turno (la clase es el valor de "tipo") */
