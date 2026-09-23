@@ -1,0 +1,125 @@
+/* Estilos globales: afectan a toda la aplicación */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: #f5f5f5;
+  color: #222;
+}
+
+a {
+  color: #2563eb;
+}
+
+/* ---------- botones (y enlaces con aspecto de botón) ---------- */
+button,
+a.boton {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  color: #222;
+  font: inherit;
+  font-size: 0.9rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled),
+a.boton:hover {
+  background: #eee;
+}
+
+button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+button.principal,
+a.boton.principal {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+button.principal:hover:not(:disabled),
+a.boton.principal:hover {
+  background: #1d4ed8;
+}
+
+/* ---------- maquetación ---------- */
+.barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+/* ---------- tablas ---------- */
+.tabla-scroll {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  min-width: 300px;
+  background: #fff;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.5rem 0.8rem;
+  border-bottom: 1px solid #ddd;
+}
+
+tr.baja {
+  color: #999;
+}
+
+/* ---------- formularios ---------- */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 450px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+}
+
+label.casilla {
+  flex-direction: row;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+input:not([type='checkbox']),
+select,
+textarea {
+  padding: 0.45rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font: inherit;
+}
+
+/* ---------- mensajes ---------- */
+.error {
+  color: #b91c1c;
+}
+
+.vacio {
+  color: #999;
+  font-size: 0.85rem;
+}

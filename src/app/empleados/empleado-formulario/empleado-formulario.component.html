@@ -1,0 +1,64 @@
+<h2>{{ id === null ? 'Nuevo empleado' : 'Editar empleado' }}</h2>
+
+@if (mensajeError()) {
+  <p class="error">{{ mensajeError() }}</p>
+}
+
+<form [formGroup]="formulario" (ngSubmit)="guardar()">
+  <label>
+    Nombre
+    <input formControlName="nombre" />
+    @if (errores()['nombre']; as error) {
+      <small class="error">{{ error }}</small>
+    }
+  </label>
+
+  <label>
+    Apellidos
+    <input formControlName="apellidos" />
+    @if (errores()['apellidos']; as error) {
+      <small class="error">{{ error }}</small>
+    }
+  </label>
+
+  <label>
+    Email
+    <input type="email" formControlName="email" />
+    @if (errores()['email']; as error) {
+      <small class="error">{{ error }}</small>
+    }
+  </label>
+
+  <label>
+    Teléfono (opcional)
+    <input formControlName="telefono" />
+    @if (errores()['telefono']; as error) {
+      <small class="error">{{ error }}</small>
+    }
+  </label>
+
+  <label>
+    Puesto
+    <select formControlName="puesto">
+      @for (puesto of puestos; track puesto) {
+        <option [value]="puesto">{{ nombresPuesto[puesto] }}</option>
+      }
+    </select>
+    @if (errores()['puesto']; as error) {
+      <small class="error">{{ error }}</small>
+    }
+  </label>
+
+  <label>
+    Fecha de alta
+    <input type="date" formControlName="fechaAlta" />
+    @if (errores()['fechaAlta']; as error) {
+      <small class="error">{{ error }}</small>
+    }
+  </label>
+
+  <div class="acciones">
+    <button type="submit" class="principal" [disabled]="guardando()">Guardar</button>
+    <button type="button" (click)="volverALaLista()">Cancelar</button>
+  </div>
+</form>

@@ -1,0 +1,51 @@
+<div class="barra">
+  <h2>Empleados</h2>
+  <a routerLink="/empleados/nuevo" class="boton principal">+ Nuevo empleado</a>
+</div>
+
+<label class="casilla">
+  <input type="checkbox" #casilla [checked]="verBajas()" (change)="cambiarVerBajas(casilla.checked)" />
+  Mostrar también los dados de baja
+</label>
+
+@if (error()) {
+  <p class="error">{{ error() }}</p>
+}
+
+<div class="tabla-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+        <th>Puesto</th>
+        <th>Alta</th>
+        <th>Estado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (empleado of empleados(); track empleado.id) {
+        <tr [class.baja]="!empleado.activo">
+          <td>{{ empleado.nombre }} {{ empleado.apellidos }}</td>
+          <td>{{ empleado.email }}</td>
+          <td>{{ empleado.telefono ?? '—' }}</td>
+          <td>{{ nombresPuesto[empleado.puesto] }}</td>
+          <td>{{ empleado.fechaAlta | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ empleado.activo ? 'Activo' : 'De baja' }}</td>
+          <td class="acciones">
+            <a [routerLink]="['/empleados', empleado.id]">Editar</a>
+            @if (empleado.activo) {
+              <button (click)="darDeBaja(empleado)">Dar de baja</button>
+            } @else {
+              <button (click)="reactivar(empleado)">Reactivar</button>
+            }
+          </td>
+        </tr>
+      } @empty {
+        <tr><td colspan="7" class="vacio">No hay empleados.</td></tr>
+      }
+    </tbody>
+  </table>
+</div>

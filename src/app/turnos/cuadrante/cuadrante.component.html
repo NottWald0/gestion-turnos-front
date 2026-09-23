@@ -1,0 +1,53 @@
+<div class="barra">
+  <h2>Cuadrante semanal</h2>
+  <div class="navegacion">
+    <button (click)="semanaAnterior()" [disabled]="!cuadrante()">‹ Anterior</button>
+    <button (click)="semanaActual()">Hoy</button>
+    <button (click)="semanaSiguiente()" [disabled]="!cuadrante()">Siguiente ›</button>
+  </div>
+</div>
+
+@if (error()) {
+  <p class="error">{{ error() }}</p>
+}
+
+@if (cuadrante(); as c) {
+  <p class="rango">Semana del {{ c.desde | date: 'dd/MM/yyyy' }} al {{ c.hasta | date: 'dd/MM/yyyy' }}</p>
+
+  <div class="semana">
+    @for (dia of c.dias; track dia.fecha) {
+      <div class="dia" [class.hoy]="dia.fecha === hoy">
+        <h3>{{ dia.diaSemana }} <span>{{ dia.fecha | date: 'dd/MM' }}</span></h3>
+
+        @for (turno of dia.turnos; track turno.id) {
+          <div class="turno" [class]="turno.tipo">
+            <strong>{{ turno.horaInicio }} – {{ turno.horaFin }}</strong>
+            <span>{{ turno.empleadoNombre }}</span>
+            <small>{{ nombresTipo[turno.tipo] }}</small>
+            @if (turno.notas) {
+              <em>{{ turno.notas }}</em>
+            }
+          </div>
+        } @empty {
+          <p class="vacio">Sin turnos</p>
+        }
+      </div>
+    }
+  </div>
+
+  <h3>Horas de la semana</h3>
+  @if (c.horasPorEmpleado.length > 0) {
+    <table>
+      <thead>
+        <tr><th>Empleado</th><th>Horas</th></tr>
+      </thead>
+      <tbody>
+        @for (h of c.horasPorEmpleado; track h.empleadoId) {
+          <tr><td>{{ h.empleadoNombre }}</td><td>{{ h.horas }} h</td></tr>
+        }
+      </tbody>
+    </table>
+  } @else {
+    <p class="vacio">No hay turnos esta semana.</p>
+  }
+}

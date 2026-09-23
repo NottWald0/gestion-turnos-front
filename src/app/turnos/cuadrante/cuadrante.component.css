@@ -1,0 +1,59 @@
+.navegacion {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.rango {
+  color: #555;
+}
+
+/* 7 columnas; en pantallas estrechas se desplaza en horizontal */
+.semana {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(140px, 1fr));
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 2rem;
+}
+
+.dia {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0.5rem;
+}
+
+.dia.hoy {
+  border: 2px solid #2563eb;
+}
+
+.dia h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  text-transform: capitalize;
+}
+
+.dia h3 span {
+  color: #777;
+  font-weight: normal;
+}
+
+.turno {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.4rem 0.5rem;
+  margin-bottom: 0.4rem;
+  border-left: 4px solid;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+/* Un color por tipo de turno (la clase es el valor de "tipo") */
+.turno.MANANA { background: #fef9c3; border-color: #eab308; }
+.turno.TARDE  { background: #dbeafe; border-color: #3b82f6; }
+.turno.CIERRE { background: #ede9fe; border-color: #8b5cf6; }
+
+.turno small {
+  color: #555;
+}
